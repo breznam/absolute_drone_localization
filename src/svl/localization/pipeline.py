@@ -10,7 +10,7 @@ from superglue_lib.models.utils import make_matching_plot_fast
 from svl.keypoint_pipeline.base import CombinedKeyPointAlgorithm
 from svl.keypoint_pipeline.matcher import KeyPointMatcher
 from svl.localization.base import BasePipeline, PipelineConfig
-from svl.localization.drone_streamer import DroneImageStreamer
+from svl.localization.drone_streamer import DroneImageStreamer #RosCameraStreamer
 from svl.localization.map_reader import SatelliteMapReader
 from svl.localization.preprocessing import QueryProcessor
 from svl.tms.data_structures import DroneImage, GeoSatelliteImage
@@ -53,7 +53,7 @@ class Pipeline(BasePipeline):
     def __init__(
         self,
         map_reader: SatelliteMapReader,
-        drone_streamer: DroneImageStreamer,
+        drone_streamer: DroneImageStreamer, #RosCameraStreamer,
         detector: CombinedKeyPointAlgorithm,
         matcher: KeyPointMatcher,
         config: PipelineConfig,
@@ -142,7 +142,7 @@ class Pipeline(BasePipeline):
             mkpts0 = drone_image.key_points.keypoints[valid]
             mkpts1 = satellite_image.key_points.keypoints[matches[valid]]
 
-            if len(mkpts0) < 4:
+            if len(mkpts0) < 10:
                 logging.debug(
                     f"Skipping image {satellite_image.name} not enough matches {len(mkpts0)}"
                 )
@@ -268,3 +268,4 @@ class Pipeline(BasePipeline):
             f"Number of matches: {num_matches} among {len(self.drone_streamer)} images"
         )
         return preds
+    

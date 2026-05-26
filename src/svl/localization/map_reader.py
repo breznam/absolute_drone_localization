@@ -126,6 +126,15 @@ class SatelliteMapReader(BaseMapReader):
         """Set metadata for all images in the database."""
         self.logger.info("Setting metadata for all images")
 
+        print(f"Metadata contains {len(self._geo_metadata)} entries.")
+        print(f"Total images loaded: {len(self._image_db)}")
+
+        metadata_filenames = set(self._geo_metadata["Filename"].tolist())
+        image_filenames = set(img_info.name for img_info in self._image_db)
+
+        print(f"First few metadata filenames:", list (metadata_filenames)[:10])
+        print(f"First few images loaded:", list(image_filenames)[:10])
+
         for img_info in tqdm(self._image_db):
             img_metadata = self._geo_metadata[
                 self._geo_metadata["Filename"] == img_info.name

@@ -5,7 +5,7 @@ from pprint import pprint
 from svl.keypoint_pipeline.detection_and_description import SuperPointAlgorithm
 from svl.keypoint_pipeline.matcher import SuperGlueMatcher
 from svl.keypoint_pipeline.typing import SuperGlueConfig, SuperPointConfig
-from svl.localization.drone_streamer import DroneImageStreamer
+from svl.localization.drone_streamer import DroneImageStreamer #RosCameraStreamer #DroneImageStreamer 
 from svl.localization.map_reader import SatelliteMapReader
 from svl.localization.pipeline import Pipeline, PipelineConfig
 from svl.localization.preprocessing import QueryProcessor
@@ -15,21 +15,25 @@ if __name__ == "__main__":
 
     # logging.basicConfig(level=logging.INFO)
     format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
+    logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S", handlers=[
+        logging.FileHandler("run_main_log.txt", mode="w", encoding="utf-8"),
+        logging.StreamHandler(),
+    ],
+    )
     # set to debug for more information
 
     # Initialize the keypoint detector
     superpoint_config = SuperPointConfig(
-        device="cuda",
+        device="cpu",
         nms_radius=4,
         keypoint_threshold=0.01,
-        max_keypoints=-1,
+        max_keypoints=1024,
     )
     superpoint_algorithm = SuperPointAlgorithm(superpoint_config)
 
     # Initialize the keypoint matcher
     superglue_config = SuperGlueConfig(
-        device="cuda",
+        device="cpu",
         weights="outdoor",
         sinkhorn_iterations=20,
         match_threshold=0.5,
@@ -38,7 +42,7 @@ if __name__ == "__main__":
 
     # Initialize the map reader
     map_reader = SatelliteMapReader(
-        db_path="data/map/",
+        db_path="data/map/fekt_z18",
         resize_size=(800,),
         logger=logging.getLogger("%s.SatelliteMapReader" % __name__),  # noqa
     )
@@ -49,21 +53,27 @@ if __name__ == "__main__":
 
     # Initialize the drone image streamer
     streamer = DroneImageStreamer(
-        image_folder="data/query/",
+        image_folder="data/query/fekt/",
         has_gt=True,
         logger=logging.getLogger("%s.DroneImageStreamer" % __name__),  # noqa
     )
     print(len(streamer))
 
+    ## Initialize the ROS bag streamer
+    #streamer = RosCameraStreamer(
+    #    topic_name="/m100_1/sensors/pylon_camera_node/image_raw",
+    #    logger=logging.getLogger("%s.RosCameraStreamer" % __name__),  # noqa
+    #)
+
     # Initialize the query processor
     camera_model = CameraModel(
-        focal_length=4.5 / 1000,  # 4.5mm
-        resolution_height=4056,
-        resolution_width=3040,
-        hfov_deg=82.9,
+        focal_length=2.95 / 1000,  # 4.5mm
+        resolution_height=540,
+        resolution_width=720,
+        hfov_deg=79.3,
     )
     query_processor = QueryProcessor(
-        processings=["resize"],
+        processings=["resize","warp"],
         camera_model=camera_model,
         satellite_resolution=None,
         size=(800,),

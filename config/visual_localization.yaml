@@ -1,0 +1,28 @@
+visual_localization:
+  ros__parameters:
+    map_db_path: data/fekt_z18
+    map_resize_size: [1024]
+    image_folder: data/fekt_merged
+    has_gt: true
+    use_ros_streamer: false
+    image_topic: /m100_1/sensors/pylon_camera_node/image_raw
+    output_path: data/output
+    processings: ["resize", "warp"]
+    query_size: [1024]
+    satellite_resolution: 0.0
+    superpoint_device: cpu
+    superpoint_nms_radius: 4
+    superpoint_keypoint_threshold: 0.01
+    superpoint_max_keypoints: -1
+    superglue_device: cpu
+    superglue_weights: outdoor
+    superglue_sinkhorn_iterations: 20
+    superglue_match_threshold: 0.5
+    camera_focal_length: 0.00295
+    camera_resolution_height: 540
+    camera_resolution_width: 720
+    camera_hfov_deg: 79.3
+    homography_method: 8
+    homography_threshold: 5.0
+    homography_confidence: 0.995
+    homography_max_iter: 2000

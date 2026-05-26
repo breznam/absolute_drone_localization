@@ -229,18 +229,18 @@ class QueryProcessor:
 
         K = get_intrinsics(query.camera_model)
         R_gimbal = rotation_matrix_from_angles(
-            # roll=query.camera_orientation.roll,
-            # pitch=query.camera_orientation.pitch,
-            roll=0,
-            pitch=0,
+            roll=query.camera_orientation.roll,
+            pitch=query.camera_orientation.pitch,
+            #roll=0,
+            #pitch=0,
             yaw=query.camera_orientation.yaw,
         )
         R_drone = rotation_matrix_from_angles(
-            # roll=query.drone_orientation.roll,
-            # pitch=query.drone_orientation.pitch,
-            roll=0,
-            pitch=0,
-            yaw=query.drone_orientation.yaw + 15,
+            roll=query.drone_orientation.roll,
+            pitch=query.drone_orientation.pitch,
+            #roll=0,
+            #pitch=0,
+            yaw=query.drone_orientation.yaw,
         )
         R_target = rotation_matrix_from_angles(0, 0, 0)
 
