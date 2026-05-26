@@ -60,7 +60,6 @@ Other files worth mentioning for this project variant:
 Clone your repository and initialize the bundled SuperGlue submodule:
 
 ```bash
-git clone <your-fork-or-project-repo>
 cd visual_localization
 git submodule update --init --recursive
 ```
