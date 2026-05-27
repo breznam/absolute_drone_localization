@@ -146,18 +146,6 @@ The tuning utilities
 were created with the help of generative AI to support parameter testing and
 strict filtering of tuning results.
 
-## Data and Git Hygiene
-
-This repository contains project-specific local data. For a clean GitHub upload:
-
-- do not commit generated experiment outputs
-- do not commit generated visualization images
-- do not commit large local datasets or downloaded map tiles unless they are intentionally part of the repository
-- do not commit temporary CSV outputs unless they are meant to be preserved as reference results
-
-In particular, local folders such as `data/output/`, tuning output folders, and
-large datasets under `data/map/` and `data/query/` should remain untracked.
-
 ## Acknowledgments
 
 - Original base repository:
